@@ -1,0 +1,190 @@
+
+/* =================================
+   1. VARIABLES GLOBALES
+   ================================= */
+
+:root {
+    --background: #f7f8f6;
+    --surface: #ffffff;
+
+    --primary: #486b56;
+    --primary-dark: #365440;
+
+    --text: #242824;
+    --text-muted: #777f78;
+
+    --border: #e2e6e1;
+}
+
+
+/* =================================
+   2. STYLES GÉNÉRAUX
+   ================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: var(--background);
+    color: var(--text);
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.container {
+    width: min(1100px, calc(100% - 40px));
+    margin: 0 auto;
+}
+
+
+/* =================================
+   3. STRUCTURE GÉNÉRALE
+   ================================= */
+
+.app-shell {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-content {
+    flex: 1;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+
+/* =================================
+   4. HEADER
+   ================================= */
+
+.site-header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+}
+
+.header-content {
+    min-height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+    color: var(--primary);
+}
+
+.main-nav {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.nav-link {
+    font-size: 14px;
+}
+
+.disabled {
+    color: var(--text-muted);
+    cursor: not-allowed;
+}
+
+
+/* =================================
+   5. PAGES
+   ================================= */
+
+.search-page h1,
+.details-page h1 {
+    font-size: 32px;
+}
+
+.search-page > p {
+    color: var(--text-muted);
+}
+
+.placeholder {
+    margin-top: 35px;
+    padding: 30px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+
+/* =================================
+   6. BOUTONS ET LIENS
+   ================================= */
+
+.button {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 12px 20px;
+    background: var(--primary);
+    color: white;
+    border-radius: 6px;
+}
+
+.button:hover {
+    background: var(--primary-dark);
+}
+
+.back-link {
+    color: var(--primary);
+    font-weight: bold;
+}
+
+
+/* =================================
+   7. FOOTER
+   ================================= */
+
+.site-footer {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 20px 0;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 13px;
+}
+
+
+/* =================================
+   8. RESPONSIVE
+   ================================= */
+
+@media (max-width: 600px) {
+
+    .header-content {
+        min-height: 65px;
+    }
+
+    .main-nav {
+        gap: 12px;
+    }
+
+    .logo {
+        font-size: 18px;
+    }
+
+    .nav-link {
+        font-size: 12px;
+    }
+
+    .main-content {
+        padding-top: 30px;
+    }
+
+    .search-page h1,
+    .details-page h1 {
+        font-size: 25px;
+    }
+}
