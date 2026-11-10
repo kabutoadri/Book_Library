@@ -1,48 +1,60 @@
 # Book_Library
-Librairie de livre
 
-Base Vue 3 pour une application de recherche de livres avec Google Books API.
-
-## Démarrer
-
-```bash
-npm install
-cp .env.example .env
-npm run dev
-```
-
-La clé API est facultative pour commencer. Si vous en utilisez une, renseignez `VITE_GOOGLE_BOOKS_API_KEY` dans `.env`. Une clé utilisée dans une application frontend est visible par les visiteurs : restreignez-la aux API et aux domaines nécessaires dans Google Cloud.
-
-## Arborescence
+Librairie de livres
 
 ```text
-src/
-├── api/                  # Client HTTP et fonctions Google Books
-├── components/
-│   ├── books/             # Carte et liste de livres
-│   ├── feedback/          # Chargement, erreur et absence de résultats
-│   ├── navigation/        # Pagination
-│   └── search/            # Formulaire de recherche et tri
-├── router/                # Routes recherche et détail
-├── stores/                # État Pinia pour recherche et détail
-├── utils/                 # Traduction des erreurs API
-├── views/                 # Pages de l'application
-├── App.vue
-├── main.js
-└── styles/
+book-library/
+│
+├── index.html
+├── README.md
+│
+├── css/
+│   └── style.css
+│
+└── src/
+    ├── main.js
+    ├── App.js
+    │
+    ├── router/
+    │   └── index.js
+    │
+    ├── views/
+    │   ├── SearchView.js
+    │   └── BookDetailsView.js
+    │
+    ├── components/
+    │   ├── AppHeader.js
+    │   ├── AppFooter.js
+    │   ├── SearchBar.js
+    │   ├── FilterPanel.js
+    │   ├── BookCard.js
+    │   └── Pagination.js
+    │
+    ├── services/
+    │   └── openLibraryApi.js
+    │
+    ├── stores/
+    │   ├── searchStore.js
+    │   └── libraryStore.js
+    │
+    └── utils/
+        └── bookMapper.js
 ```
 
-## Recherche Google Books
+## Organisation du projet
 
-Le service appelle `GET https://www.googleapis.com/books/v1/volumes` avec `q`, `printType=books`, `startIndex`, `maxResults` et `orderBy`. La taille de page est fixée à 20 (l'API accepte au maximum 40). Les termes avancés de l'API, comme `intitle:` et `inauthor:`, peuvent être saisis directement dans le champ de recherche.
+Le projet est organisé de manière modulaire afin de séparer les différentes responsabilités de l'application.
 
-La réponse est normalisée dans le store à partir de `totalItems` et `items`. Les états `loading`, `error`, `hasSearched` et `books.length === 0` pilotent séparément l'affichage du chargement, des erreurs et des résultats vides.
+- **index.html** : point d'entrée de l'application.
+- **css/** : contient la feuille de style principale `style.css`, qui regroupe les styles de l'ensemble du projet.
+- **src/** : contient le code JavaScript de l'application Vue.js.
+  - **main.js** : initialise l'application Vue.js.
+  - **App.js** : définit la structure générale de l'application.
+  - **router/** : gère la navigation entre les différentes pages.
+  - **views/** : contient les vues principales, notamment la recherche et les détails d'un livre.
+  - **components/** : regroupe les composants réutilisables de l'interface.
+  - **services/** : centralise les communications avec l'API Open Library.
+  - **stores/** : gère les données partagées entre les composants et les différentes vues.
+  - **utils/** : contient les fonctions utilitaires, notamment la transformation des données reçues de l'API.
 
-## Responsabilités principales
-
-- `src/api/googleBooks.js` : configuration Axios et accès aux volumes.
-- `src/stores/books.js` : requête, pagination, tri et état de recherche.
-- `src/stores/bookDetails.js` : récupération d'un volume par son identifiant.
-- `src/views/SearchView.vue` : composition du formulaire, des résultats et des états.
-- `src/views/BookDetailsView.vue` : page de détail accessible via `/books/:id`.
-- `src/utils/apiError.js` : messages utilisateur pour les erreurs réseau et HTTP.
+Cette organisation permet de faciliter la maintenance, la réutilisation du code et l'évolution du projet.
