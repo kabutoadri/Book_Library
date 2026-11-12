@@ -9,7 +9,7 @@ book-library/
 ├── README.md
 │
 ├── css/
-│   └── style.css
+│   └── styles.css
 │
 └── src/
     ├── main.js
@@ -46,7 +46,7 @@ book-library/
 Le projet est organisé de manière modulaire afin de séparer les différentes responsabilités de l'application.
 
 - **index.html** : point d'entrée de l'application.
-- **css/** : contient la feuille de style principale `style.css`, qui regroupe les styles de l'ensemble du projet.
+- **css/** : contient la feuille de style principale `styles.css`, qui regroupe les styles de l'ensemble du projet.
 - **src/** : contient le code JavaScript de l'application Vue.js.
   - **main.js** : initialise l'application Vue.js.
   - **App.js** : définit la structure générale de l'application.
