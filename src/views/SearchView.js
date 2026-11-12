@@ -1,24 +1,70 @@
+
 import SearchBar from '../components/SearchBar.js';
+import { searchBooks } from '../services/googleBooksApi.js';
 
 export default {
     name: 'SearchView',
-    
+
     components: {
         SearchBar
     },
 
-    data() {
-        return {
-            submittedQuery: ''
-        };
-    },
     methods: {
-        handleSearch(query) {
-            this.submittedQuery = query;
-            // Vous pouvez ajouter ici la logique pour effectuer la recherche réelle
-            console.log('Recherche soumise :', query);
-        }
 
+        async handleSearch(query) {
+
+            console.log('Recherche envoyée :', query);
+
+            try {
+
+                // Appel de Google Books API
+                const data = await searchBooks(query);
+
+                // Affichage de la réponse complète
+                console.log(
+                    'Réponse complète Google Books API :',
+                    data
+                );
+
+                // Informations générales sur la réponse
+                console.log('Nombre total de résultats :', data.totalItems);
+
+                console.log(
+                    'Nombre de livres retournés :',
+                    data.items?.length ?? 0
+                );
+
+            } catch (error) {
+
+                if (error.response) {
+
+                    // Erreur HTTP retournée par Google
+                    console.error(
+                        'Erreur API :',
+                        error.response.status,
+                        error.response.data
+                    );
+
+                } else if (error.request) {
+
+                    // Aucune réponse du serveur
+                    console.error(
+                        'Erreur réseau :',
+                        error.message
+                    );
+
+                } else {
+
+                    // Autre erreur (configuration, clé API, etc.)
+                    console.error(
+                        'Erreur de recherche :',
+                        error.message
+                    );
+
+                }
+
+            }
+        }
     },
 
     template: `
@@ -38,10 +84,6 @@ export default {
                 </p>
 
                 <SearchBar @search="handleSearch" />
-
-                <p v-if="submittedQuery" class="search-feedback">
-                    Recherche saisie : {{ submittedQuery }}
-                </p>
 
             </div>
 

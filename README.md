@@ -9,7 +9,7 @@ book-library/
 ├── README.md
 │
 ├── css/
-│   └── style.css
+│   └── styles.css
 │
 └── src/
     ├── main.js
@@ -31,7 +31,7 @@ book-library/
     │   └── Pagination.js
     │
     ├── services/
-    │   └── openLibraryApi.js
+    │   └── googleBooksApi.js
     │
     ├── stores/
     │   ├── searchStore.js
@@ -46,14 +46,14 @@ book-library/
 Le projet est organisé de manière modulaire afin de séparer les différentes responsabilités de l'application.
 
 - **index.html** : point d'entrée de l'application.
-- **css/** : contient la feuille de style principale `style.css`, qui regroupe les styles de l'ensemble du projet.
+- **css/** : contient la feuille de style principale `styles.css`, qui regroupe les styles de l'ensemble du projet.
 - **src/** : contient le code JavaScript de l'application Vue.js.
   - **main.js** : initialise l'application Vue.js.
   - **App.js** : définit la structure générale de l'application.
   - **router/** : gère la navigation entre les différentes pages.
   - **views/** : contient les vues principales, notamment la recherche et les détails d'un livre.
   - **components/** : regroupe les composants réutilisables de l'interface.
-  - **services/** : centralise les communications avec l'API Open Library.
+  - **services/** : centralise les communications avec l'API Google Books.
   - **stores/** : gère les données partagées entre les composants et les différentes vues.
   - **utils/** : contient les fonctions utilitaires, notamment la transformation des données reçues de l'API.
 
