@@ -3,32 +3,39 @@
 Librairie de livres
 
 ```text
-book-library/
+
+Book_Library/
 │
 ├── index.html
 ├── README.md
+├── package.json
+├── package-lock.json
+├── vite.config.js
+├── .gitignore
+├── .env
+├── .env.example
 │
 ├── css/
 │   └── styles.css
 │
 └── src/
     ├── main.js
-    ├── App.js
+    ├── App.vue
     │
     ├── router/
     │   └── index.js
     │
     ├── views/
-    │   ├── SearchView.js
-    │   └── BookDetailsView.js
+    │   ├── SearchView.vue
+    │   └── BookDetailView.vue
     │
     ├── components/
-    │   ├── AppHeader.js
-    │   ├── AppFooter.js
-    │   ├── SearchBar.js
-    │   ├── FilterPanel.js
-    │   ├── BookCard.js
-    │   └── Pagination.js
+    │   ├── AppHeader.vue
+    │   ├── AppFooter.vue
+    │   ├── SearchBar.vue
+    │   ├── FilterPanel.vue
+    │   ├── BookCard.vue
+    │   └── Pagination.vue
     │
     ├── services/
     │   └── googleBooksApi.js
@@ -39,6 +46,7 @@ book-library/
     │
     └── utils/
         └── bookMapper.js
+
 ```
 
 ## Organisation du projet

@@ -1,8 +1,10 @@
 
-import { GOOGLE_API_KEY } from '../config.js';
+import axios from 'axios';
+
+const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 
 // Configuration Axios
-const api = window.axios.create({
+const api = axios.create({
     baseURL: 'https://www.googleapis.com/books/v1',
     timeout: 15000
 });
@@ -11,7 +13,7 @@ const api = window.axios.create({
  * Recherche des livres sur Google Books.
  *
  * @param {string} query - Texte recherché
- * @returns {Promise<Object>} Réponse de l'API
+ * @returns {Promise<Object>} Réponse JSON de l'API
  */
 export async function searchBooks(query) {
 
@@ -21,7 +23,7 @@ export async function searchBooks(query) {
         throw new Error('La recherche ne peut pas être vide.');
     }
 
-    if (!GOOGLE_API_KEY) {
+    if (!API_KEY) {
         throw new Error('La clé Google Books API est manquante.');
     }
 
@@ -30,7 +32,7 @@ export async function searchBooks(query) {
         const response = await api.get('/volumes', {
             params: {
                 q: searchQuery,
-                key: GOOGLE_API_KEY,
+                key: API_KEY,
                 printType: 'books',
                 maxResults: 10,
                 orderBy: 'relevance'

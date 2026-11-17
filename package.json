@@ -1,0 +1,32 @@
+
+{
+    "name": "book_library",
+    "version": "1.0.0",
+    "description": "Librairie de livres",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kabutoadri/Book_Library.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "type": "module",
+    "bugs": {
+        "url": "https://github.com/kabutoadri/Book_Library/issues"
+    },
+    "homepage": "https://github.com/kabutoadri/Book_Library#readme",
+    "dependencies": {
+        "axios": "^1.21.1",
+        "vue": "^3.5.45",
+        "vue-router": "^5.5.1"
+    },
+    "devDependencies": {
+        "@vitejs/plugin-vue": "^6.0.11",
+        "vite": "^8.3.8"
+    }
+}
