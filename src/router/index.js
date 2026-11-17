@@ -1,8 +1,8 @@
 
 import { createRouter, createWebHashHistory } from 'vue-router';
 
-import SearchView from '../views/SearchView.js';
-import BookDetailView from '../views/BookDetailView.js';
+import SearchView from '../views/SearchView.vue';
+import BookDetailView from '../views/BookDetailView.vue';
 
 const routes = [
     {

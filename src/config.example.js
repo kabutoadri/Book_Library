@@ -1,1 +1,0 @@
-export const GOOGLE_API_KEY = 'REMPLACER_PAR_VOTRE_CLE';
