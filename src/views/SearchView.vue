@@ -1,9 +1,30 @@
 
 <script setup>
+import { ref } from 'vue';
+
 import SearchBar from '../components/SearchBar.vue';
 import { searchBooks } from '../services/googleBooksApi.js';
 
+// Message d'erreur affiché à l'utilisateur
+const errorMessage = ref('');
+
+/**
+ * Lance une recherche sur Google Books.
+ *
+ * @param {string} query - Texte recherché
+ */
 async function handleSearch(query) {
+
+    // Réinitialisation du message précédent
+    errorMessage.value = '';
+
+    // Vérification du champ de recherche
+    if (!query) {
+        errorMessage.value =
+            'Veuillez saisir le nom du livre recherché';
+
+        return;
+    }
 
     console.log('Recherche envoyée :', query);
 
@@ -12,14 +33,16 @@ async function handleSearch(query) {
         // Appel de Google Books API
         const data = await searchBooks(query);
 
-        // Affichage de la réponse complète
+        // Affichage de la réponse complète dans la console
         console.log(
             'Réponse complète Google Books API :',
             data
         );
 
-        // Informations générales
-        console.log('Nombre total de résultats :', data.totalItems);
+        console.log(
+            'Nombre total de résultats :',
+            data.totalItems
+        );
 
         console.log(
             'Nombre de livres retournés :',
@@ -28,29 +51,46 @@ async function handleSearch(query) {
 
     } catch (error) {
 
-        if (error.response) {
+        // Détection d'un délai dépassé
+        if (
+            error.code === 'ETIMEDOUT' ||
+            error.code === 'ECONNABORTED'
+        ) {
 
-            console.error(
-                'Erreur API :',
-                error.response.status,
-                error.response.data
-            );
-
-        } else if (error.request) {
-
-            console.error(
-                'Erreur réseau :',
-                error.message
-            );
-
-        } else {
-
-            console.error(
-                'Erreur de recherche :',
-                error.message
-            );
+            errorMessage.value =
+                'Le délai de réponse a été dépassé';
 
         }
+
+        // Détection d'une erreur retournée par l'API
+        else if (error.response) {
+
+            errorMessage.value =
+                'Service de recherche indisponible';
+
+        }
+
+        // Détection d'un problème réseau
+        else if (
+            error.code === 'ERR_NETWORK' ||
+            error.request
+        ) {
+
+            errorMessage.value =
+                'Vérifiez votre connexion internet';
+
+        }
+
+        // Autres erreurs
+        else {
+
+            errorMessage.value =
+                'Service de recherche indisponible';
+
+        }
+
+        // Informations techniques pour le développeur
+        console.error('Détail de l’erreur :', error);
     }
 }
 </script>
@@ -72,6 +112,15 @@ async function handleSearch(query) {
             </p>
 
             <SearchBar @search="handleSearch" />
+
+            <!-- Affichage des erreurs -->
+            <p
+                v-if="errorMessage"
+                class="search-error"
+                role="alert"
+            >
+                {{ errorMessage }}
+            </p>
 
         </div>
 

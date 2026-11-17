@@ -8,14 +8,8 @@ const query = ref('');
 
 function submitSearch() {
 
-    const searchQuery = query.value.trim();
-
-    if (!searchQuery) {
-        return;
-    }
-
-    // Transmission de la recherche au composant parent
-    emit('search', searchQuery);
+    // Transmission du texte au composant parent
+    emit('search', query.value.trim());
 }
 </script>
 

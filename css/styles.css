@@ -234,7 +234,24 @@ a {
 }
 
 /* =================================
-   9. RESPONSIVE
+   9. MESSAGES D'ERREUR
+   ================================= */
+
+.search-error {
+    margin-top: 15px;
+    padding: 12px 16px;
+
+    color: #b42318;
+    background-color: #fef3f2;
+
+    border: 1px solid #fecdca;
+    border-radius: 7px;
+
+    font-size: 14px;
+}
+
+/* =================================
+   10. RESPONSIVE
    ================================= */
 
 @media (max-width: 600px) {
