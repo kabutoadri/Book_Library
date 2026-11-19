@@ -3,32 +3,39 @@
 Librairie de livres
 
 ```text
-book-library/
+
+Book_Library/
 │
 ├── index.html
 ├── README.md
+├── package.json
+├── package-lock.json
+├── vite.config.js
+├── .gitignore
+├── .env
+├── .env.example
 │
 ├── css/
-│   └── style.css
+│   └── styles.css
 │
 └── src/
     ├── main.js
-    ├── App.js
+    ├── App.vue
     │
     ├── router/
     │   └── index.js
     │
     ├── views/
-    │   ├── SearchView.js
-    │   └── BookDetailsView.js
+    │   ├── SearchView.vue
+    │   └── BookDetailView.vue
     │
     ├── components/
-    │   ├── AppHeader.js
-    │   ├── AppFooter.js
-    │   ├── SearchBar.js
-    │   ├── FilterPanel.js
-    │   ├── BookCard.js
-    │   └── Pagination.js
+    │   ├── AppHeader.vue
+    │   ├── AppFooter.vue
+    │   ├── SearchBar.vue
+    │   ├── FilterPanel.vue
+    │   ├── BookCard.vue
+    │   └── Pagination.vue
     │
     ├── services/
     │   └── googleBooksApi.js
@@ -39,6 +46,7 @@ book-library/
     │
     └── utils/
         └── bookMapper.js
+
 ```
 
 ## Organisation du projet
@@ -46,10 +54,10 @@ book-library/
 Le projet est organisé de manière modulaire afin de séparer les différentes responsabilités de l'application.
 
 - **index.html** : point d'entrée de l'application.
-- **css/** : contient la feuille de style principale `style.css`, qui regroupe les styles de l'ensemble du projet.
+- **css/** : contient la feuille de style principale `styles.css`, qui regroupe les styles de l'ensemble du projet.
 - **src/** : contient le code JavaScript de l'application Vue.js.
   - **main.js** : initialise l'application Vue.js.
-  - **App.js** : définit la structure générale de l'application.
+  - **App.vue** : définit la structure générale de l'application.
   - **router/** : gère la navigation entre les différentes pages.
   - **views/** : contient les vues principales, notamment la recherche et les détails d'un livre.
   - **components/** : regroupe les composants réutilisables de l'interface.
