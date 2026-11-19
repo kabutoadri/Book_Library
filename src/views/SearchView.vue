@@ -121,9 +121,10 @@ async function handleSearch(query) {
 }
 </script>
 
+
 <template>
     <section class="search-page">
-<!-- En-tête de la page de recherche -->
+    <!-- En-tête de la page de recherche -->
     <div class="search-section">
         <div class="container">
 
@@ -139,9 +140,11 @@ async function handleSearch(query) {
                 Explorez des milliers de livres et gardez
                 vos découvertes à portée de main.
             </p>
-        <!-- Barre de recherche : transmet le terme recherché à handleSearch -->
+            <!-- Barre de recherche : transmet le terme recherché à handleSearch -->
             <SearchBar @search="handleSearch" />
-            
+                </div>
+            </div>
+
             <!-- Composant de chargement -->
             <LoadingSpinner
                 :loading="loading"
@@ -161,14 +164,14 @@ async function handleSearch(query) {
         </div>
     
 
-        <!-- Zone des résultats -->
+            <!-- Zone des résultats -->
             <div class="results-section">
                 <div class="container">
 
-            <!-- Grille contenant les cartes des livres trouvés -->
+                <!-- Grille contenant les cartes des livres trouvés -->
                 <div class="books-grid">
 
-            <!-- Création d'une carte pour chaque livre retourné par l'API -->
+                    <!-- Création d'une carte pour chaque livre retourné par l'API -->
                     <BookCard
                     v-for="book in paginatedBooks"
                     :key="book.id"
