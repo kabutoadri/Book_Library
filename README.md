@@ -57,7 +57,7 @@ Le projet est organisé de manière modulaire afin de séparer les différentes 
 - **css/** : contient la feuille de style principale `styles.css`, qui regroupe les styles de l'ensemble du projet.
 - **src/** : contient le code JavaScript de l'application Vue.js.
   - **main.js** : initialise l'application Vue.js.
-  - **App.js** : définit la structure générale de l'application.
+  - **App.vue** : définit la structure générale de l'application.
   - **router/** : gère la navigation entre les différentes pages.
   - **views/** : contient les vues principales, notamment la recherche et les détails d'un livre.
   - **components/** : regroupe les composants réutilisables de l'interface.
