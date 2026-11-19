@@ -321,3 +321,39 @@ a {
     margin: 6px 0;
     line-height: 1.5;
 }
+
+/* =================================
+   11. GRILLE DES LIVRES
+   ================================= */
+
+.books-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 24px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+```css
+/* =================================
+   12. ZONE DE RECHERCHE
+   ================================= */
+
+.search-section {
+    background-color: #f3f5f3;
+    padding: 25px 0;
+}
+
+.search-section-content {
+    display: flex;
+    align-items: center;
+}
+
+/* =================================
+   13. ZONE DES RÉSULTATS
+   ================================= */
+
+.results-section {
+    background-color: var(--surface);
+    padding: 30px 0 50px;
+    min-height: 500px;
+}
