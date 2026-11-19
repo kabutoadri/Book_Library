@@ -1,4 +1,3 @@
-
 <script setup>
 //Import de ref pour créer une variable réactive dans Vue et computed pour recalculer les indices automatiquement lorsque currentPage change
 import { ref,computed } from 'vue';
