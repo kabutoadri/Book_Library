@@ -9,7 +9,7 @@ const MAX_RESULTS = 40;
 // Configuration Axios
 const api = axios.create({
     baseURL: 'https://www.googleapis.com/books/v1',
-    timeout: 15000
+    timeout: 10000, // 10 secondes
 });
 
 /**
@@ -77,7 +77,6 @@ export async function searchBooks(query) {
             totalItems: totalItems,
             items: allBooks.slice(0, MAX_RESULTS)
         };
-
     } catch (error) {
 
         console.error(
