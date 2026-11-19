@@ -84,6 +84,11 @@ async function handleSearch(query) {
         // Stockage des livres retournés dans notre tableau réactif
         books.value = data.items || [];
 
+        // Vérification si aucun livre n'a été trouvé
+        if (books.value.length === 0) {
+             // Affichage d'un message informatif à l'utilisateur
+            errorMessage.value = 'Aucun livre trouvé pour cette recherche';
+        }
         // Revenir à la première page après chaque nouvelle recherche
         currentPage.value = 1;
 
@@ -188,14 +193,17 @@ async function handleSearch(query) {
         <!-- Zone des résultats -->
             <div class="results-section">
                 <div class="container">
+
             <!-- Grille contenant les cartes des livres trouvés -->
                 <div class="books-grid">
+
             <!-- Création d'une carte pour chaque livre retourné par l'API -->
                     <BookCard
                     v-for="book in paginatedBooks"
                     :key="book.id"
                     :book="book.volumeInfo" />
                     </div>
+
                     <!-- Navigation entre les pages -->
                     <div v-if="totalPages > 1" class="pagination">
 
