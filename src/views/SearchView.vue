@@ -4,6 +4,9 @@ import { ref } from 'vue';
 
 import SearchBar from '../components/SearchBar.vue';
 import { searchBooks } from '../services/googleBooksApi.js';
+import LoadingSpinner from '../components/LoadingSpinner.vue'
+
+const loading = ref(false)
 
 // Message d'erreur affiché à l'utilisateur
 const errorMessage = ref('');
@@ -27,6 +30,9 @@ async function handleSearch(query) {
     }
 
     console.log('Recherche envoyée :', query);
+
+    // Active le chargement juste avant l'appel API
+    loading.value = true
 
     try {
 
@@ -55,6 +61,7 @@ async function handleSearch(query) {
         if (
             error.code === 'ETIMEDOUT' ||
             error.code === 'ECONNABORTED'
+            
         ) {
 
             errorMessage.value =
@@ -91,6 +98,12 @@ async function handleSearch(query) {
 
         // Informations techniques pour le développeur
         console.error('Détail de l’erreur :', error);
+    } finally {
+
+        // Arrête le chargement dans tous les cas,
+        // que la recherche réussisse ou échoue.
+        loading.value = false
+
     }
 }
 </script>
@@ -112,6 +125,13 @@ async function handleSearch(query) {
             </p>
 
             <SearchBar @search="handleSearch" />
+            
+            <!-- Composant de chargement -->
+            <LoadingSpinner
+                :loading="loading"
+                message="Recherche en cours..."
+                :delay="300"
+            />
 
             <!-- Affichage des erreurs -->
             <p

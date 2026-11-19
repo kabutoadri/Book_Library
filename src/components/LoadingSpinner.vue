@@ -1,7 +1,7 @@
 
 <script setup>
 import { ref, watch, onUnmounted } from 'vue'
-import '../css/LoadingSpinner.css'
+import '../../css/LoadingSpinner.css'
 
 // Propriétés transmises par le composant parent.
 const props = defineProps({
