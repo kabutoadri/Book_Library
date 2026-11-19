@@ -1,10 +1,58 @@
 
 <script setup>
-import { ref } from 'vue';
-
+//Import de ref pour créer une variable réactive dans Vue et computed pour recalculer les indices automatiquement lorsque currentPage change
+import { ref,computed } from 'vue';
+// Import des composants utilisés dans cette page
 import SearchBar from '../components/SearchBar.vue';
 import { searchBooks } from '../services/googleBooksApi.js';
 
+// Import de la fonction qui permet d'interroger l'API Google Books
+import BookCard from '../components/BookCard.vue';
+
+//// Tableau réactif qui contiendra les livres récupérés depuis l'API
+const books = ref([]);
+
+// Numéro de la page actuellement affichée
+const currentPage = ref(1);
+
+// Nombre de livres affichés par page
+const booksPerPage = 10;
+
+// Indice du premier livre de la page actuelle
+const startIndex = computed(() => (currentPage.value - 1) * booksPerPage);
+
+// Indice de fin de la tranche (exclu)
+const endIndex = computed(() => startIndex.value + booksPerPage);
+
+// Livres à afficher sur la page actuelle
+const paginatedBooks = computed(() => {
+    const pageBooks = [];
+
+    for (
+        let i = startIndex.value;
+        i < endIndex.value && i < books.value.length;
+        i++
+    ) {
+        pageBooks.push(books.value[i]);
+    }
+
+    return pageBooks;
+});
+// Nombre total de pages nécessaires pour afficher tous les livres
+const totalPages = computed(() =>
+    Math.ceil(books.value.length / booksPerPage)
+);
+
+// Numéros de pages à afficher (maximum 4)
+const visiblePages = computed(() => {
+    const pages = [];
+
+    for (let i = 1; i <= totalPages.value && i <= 4; i++) {
+        pages.push(i);
+    }
+
+    return pages;
+});
 // Message d'erreur affiché à l'utilisateur
 const errorMessage = ref('');
 
@@ -33,7 +81,18 @@ async function handleSearch(query) {
         // Appel de Google Books API
         const data = await searchBooks(query);
 
-        // Affichage de la réponse complète dans la console
+        // Stockage des livres retournés dans notre tableau réactif
+        books.value = data.items || [];
+
+        // Vérification si aucun livre n'a été trouvé
+        if (books.value.length === 0) {
+             // Affichage d'un message informatif à l'utilisateur
+            errorMessage.value = 'Aucun livre trouvé pour cette recherche';
+        }
+        // Revenir à la première page après chaque nouvelle recherche
+        currentPage.value = 1;
+
+        // Affichage de la réponse complète
         console.log(
             'Réponse complète Google Books API :',
             data
@@ -48,6 +107,7 @@ async function handleSearch(query) {
             'Nombre de livres retournés :',
             data.items?.length ?? 0
         );
+        
 
     } catch (error) {
 
@@ -96,10 +156,13 @@ async function handleSearch(query) {
 </script>
 
 <template>
-    <section class="search-page container">
+    <section class="search-page">
+<!-- En-tête de la page de recherche -->
+    <div class="search-section">
+        <div class="container">
 
         <div class="search-hero">
-
+           
             <p class="search-eyebrow">
                 VOTRE PROCHAINE HISTOIRE COMMENCE ICI
             </p>
@@ -110,8 +173,10 @@ async function handleSearch(query) {
                 Explorez des milliers de livres et gardez
                 vos découvertes à portée de main.
             </p>
-
+        <!-- Barre de recherche : transmet le terme recherché à handleSearch -->
             <SearchBar @search="handleSearch" />
+                </div>
+            </div>
 
             <!-- Affichage des erreurs -->
             <p
@@ -123,6 +188,57 @@ async function handleSearch(query) {
             </p>
 
         </div>
+    
+
+        <!-- Zone des résultats -->
+            <div class="results-section">
+                <div class="container">
+
+            <!-- Grille contenant les cartes des livres trouvés -->
+                <div class="books-grid">
+
+            <!-- Création d'une carte pour chaque livre retourné par l'API -->
+                    <BookCard
+                    v-for="book in paginatedBooks"
+                    :key="book.id"
+                    :book="book.volumeInfo" />
+                    </div>
+
+                    <!-- Navigation entre les pages -->
+                    <div v-if="totalPages > 1" class="pagination">
+
+                    <!-- Bouton page précédente -->
+                    <button
+                        type="button"
+                        @click="currentPage--"
+                        :disabled="currentPage === 1"
+                    >
+                            Précédent
+                        </button>
+
+                        <!-- Numéros des pages -->
+                        <button
+                            v-for="page in visiblePages"
+                            :key="page"
+                            type="button"
+                            @click="currentPage = page"
+                            :class="{ active: currentPage === page }"
+                        >
+                            {{ page }}
+                        </button>
+
+                        <!-- Bouton page suivante -->
+                        <button
+                            type="button"
+                            @click="currentPage++"
+                            :disabled="currentPage === totalPages"
+                        >
+                            Suivant
+                        </button>
+
+    </div>
+                </div>
+            </div>
 
     </section>
 </template>
