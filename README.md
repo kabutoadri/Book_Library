@@ -31,7 +31,7 @@ book-library/
     │   └── Pagination.js
     │
     ├── services/
-    │   └── openLibraryApi.js
+    │   └── googleBooksApi.js
     │
     ├── stores/
     │   ├── searchStore.js
@@ -53,7 +53,7 @@ Le projet est organisé de manière modulaire afin de séparer les différentes 
   - **router/** : gère la navigation entre les différentes pages.
   - **views/** : contient les vues principales, notamment la recherche et les détails d'un livre.
   - **components/** : regroupe les composants réutilisables de l'interface.
-  - **services/** : centralise les communications avec l'API Open Library.
+  - **services/** : centralise les communications avec l'API Google Books.
   - **stores/** : gère les données partagées entre les composants et les différentes vues.
   - **utils/** : contient les fonctions utilitaires, notamment la transformation des données reçues de l'API.
 
