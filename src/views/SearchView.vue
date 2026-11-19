@@ -5,54 +5,10 @@ import { ref,computed } from 'vue';
 // Import des composants utilisés dans cette page
 import SearchBar from '../components/SearchBar.vue';
 import { searchBooks } from '../services/googleBooksApi.js';
+import LoadingSpinner from '../components/LoadingSpinner.vue'
 
-// Import de la fonction qui permet d'interroger l'API Google Books
-import BookCard from '../components/BookCard.vue';
+const loading = ref(false)
 
-//// Tableau réactif qui contiendra les livres récupérés depuis l'API
-const books = ref([]);
-
-// Numéro de la page actuellement affichée
-const currentPage = ref(1);
-
-// Nombre de livres affichés par page
-const booksPerPage = 10;
-
-// Indice du premier livre de la page actuelle
-const startIndex = computed(() => (currentPage.value - 1) * booksPerPage);
-
-// Indice de fin de la tranche (exclu)
-const endIndex = computed(() => startIndex.value + booksPerPage);
-
-// Livres à afficher sur la page actuelle
-const paginatedBooks = computed(() => {
-    const pageBooks = [];
-
-    for (
-        let i = startIndex.value;
-        i < endIndex.value && i < books.value.length;
-        i++
-    ) {
-        pageBooks.push(books.value[i]);
-    }
-
-    return pageBooks;
-});
-// Nombre total de pages nécessaires pour afficher tous les livres
-const totalPages = computed(() =>
-    Math.ceil(books.value.length / booksPerPage)
-);
-
-// Numéros de pages à afficher (maximum 4)
-const visiblePages = computed(() => {
-    const pages = [];
-
-    for (let i = 1; i <= totalPages.value && i <= 4; i++) {
-        pages.push(i);
-    }
-
-    return pages;
-});
 // Message d'erreur affiché à l'utilisateur
 const errorMessage = ref('');
 
@@ -75,6 +31,9 @@ async function handleSearch(query) {
     }
 
     console.log('Recherche envoyée :', query);
+
+    // Active le chargement juste avant l'appel API
+    loading.value = true
 
     try {
 
@@ -115,6 +74,7 @@ async function handleSearch(query) {
         if (
             error.code === 'ETIMEDOUT' ||
             error.code === 'ECONNABORTED'
+            
         ) {
 
             errorMessage.value =
@@ -151,6 +111,12 @@ async function handleSearch(query) {
 
         // Informations techniques pour le développeur
         console.error('Détail de l’erreur :', error);
+    } finally {
+
+        // Arrête le chargement dans tous les cas,
+        // que la recherche réussisse ou échoue.
+        loading.value = false
+
     }
 }
 </script>
@@ -175,8 +141,13 @@ async function handleSearch(query) {
             </p>
         <!-- Barre de recherche : transmet le terme recherché à handleSearch -->
             <SearchBar @search="handleSearch" />
-                </div>
-            </div>
+            
+            <!-- Composant de chargement -->
+            <LoadingSpinner
+                :loading="loading"
+                message="Recherche en cours..."
+                :delay="300"
+            />
 
             <!-- Affichage des erreurs -->
             <p
