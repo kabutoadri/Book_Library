@@ -1,4 +1,3 @@
-
 <script setup>
 // Import des fonctions Vue
 import { ref, computed } from 'vue';
@@ -146,8 +145,16 @@ async function handleSearch(query) {
             error.code === 'ERR_NETWORK' ||
             error.request
         ) {
+
+            // Réinitialisation des résultats précédents
+            books.value = [];
+
+            // Retour à la première page
+            currentPage.value = 1;
+
             errorMessage.value =
                 'Vérifiez votre connexion internet';
+
         }
 
         // Autres erreurs
@@ -198,11 +205,7 @@ async function handleSearch(query) {
             </div>
 
             <!-- Composant de chargement -->
-            <LoadingSpinner
-                :loading="loading"
-                message="Recherche en cours..."
-                :delay="300"
-            />
+            <LoadingSpinner :loading="loading" message="Recherche en cours..." :delay="300" />
 
             <!-- Composant réutilisable de gestion des erreurs -->
             <div class="container">
@@ -219,46 +222,26 @@ async function handleSearch(query) {
                 <!-- Grille des livres -->
                 <div class="books-grid">
 
-                    <BookCard
-                        v-for="book in paginatedBooks"
-                        :key="book.id"
-                        :book="book.volumeInfo"
-                    />
+                    <BookCard v-for="book in paginatedBooks" :key="book.id" :book="book.volumeInfo" />
 
                 </div>
 
                 <!-- Navigation entre les pages -->
-                <div
-                    v-if="totalPages > 1"
-                    class="pagination"
-                >
+                <div v-if="totalPages > 1" class="pagination">
 
                     <!-- Bouton page précédente -->
-                    <button
-                        type="button"
-                        @click="currentPage--"
-                        :disabled="currentPage === 1"
-                    >
+                    <button type="button" @click="currentPage--" :disabled="currentPage === 1">
                         Précédent
                     </button>
 
                     <!-- Numéros des pages -->
-                    <button
-                        v-for="page in visiblePages"
-                        :key="page"
-                        type="button"
-                        @click="currentPage = page"
-                        :class="{ active: currentPage === page }"
-                    >
+                    <button v-for="page in visiblePages" :key="page" type="button" @click="currentPage = page"
+                        :class="{ active: currentPage === page }">
                         {{ page }}
                     </button>
 
                     <!-- Bouton page suivante -->
-                    <button
-                        type="button"
-                        @click="currentPage++"
-                        :disabled="currentPage === totalPages"
-                    >
+                    <button type="button" @click="currentPage++" :disabled="currentPage === totalPages">
                         Suivant
                     </button>
 
