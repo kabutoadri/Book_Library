@@ -4,9 +4,15 @@ import { ref,computed } from 'vue';
 // Import des composants utilisés dans cette page
 import SearchBar from '../components/SearchBar.vue';
 import { searchBooks } from '../services/googleBooksApi.js';
-
+// Import du composant de chargement
+import LoadingSpinner from '../components/LoadingSpinner.vue'
 // Import de la fonction qui permet d'interroger l'API Google Books
 import BookCard from '../components/BookCard.vue';
+
+const loading = ref(false)
+
+// Message d'erreur affiché à l'utilisateur
+const errorMessage = ref('');
 
 //// Tableau réactif qui contiendra les livres récupérés depuis l'API
 const books = ref([]);
@@ -52,8 +58,6 @@ const visiblePages = computed(() => {
 
     return pages;
 });
-// Message d'erreur affiché à l'utilisateur
-const errorMessage = ref('');
 
 /**
  * Lance une recherche sur Google Books.
@@ -74,6 +78,9 @@ async function handleSearch(query) {
     }
 
     console.log('Recherche envoyée :', query);
+
+    // Active le chargement juste avant l'appel API
+    loading.value = true
 
     try {
 
@@ -114,6 +121,7 @@ async function handleSearch(query) {
         if (
             error.code === 'ETIMEDOUT' ||
             error.code === 'ECONNABORTED'
+            
         ) {
 
             errorMessage.value =
@@ -150,13 +158,20 @@ async function handleSearch(query) {
 
         // Informations techniques pour le développeur
         console.error('Détail de l’erreur :', error);
+    } finally {
+
+        // Arrête le chargement dans tous les cas,
+        // que la recherche réussisse ou échoue.
+        loading.value = false
+
     }
 }
 </script>
 
+
 <template>
     <section class="search-page">
-<!-- En-tête de la page de recherche -->
+    <!-- En-tête de la page de recherche -->
     <div class="search-section">
         <div class="container">
 
@@ -172,10 +187,17 @@ async function handleSearch(query) {
                 Explorez des milliers de livres et gardez
                 vos découvertes à portée de main.
             </p>
-        <!-- Barre de recherche : transmet le terme recherché à handleSearch -->
+            <!-- Barre de recherche : transmet le terme recherché à handleSearch -->
             <SearchBar @search="handleSearch" />
                 </div>
             </div>
+
+            <!-- Composant de chargement -->
+            <LoadingSpinner
+                :loading="loading"
+                message="Recherche en cours..."
+                :delay="300"
+            />
 
             <!-- Affichage des erreurs -->
             <p
@@ -189,14 +211,14 @@ async function handleSearch(query) {
         </div>
     
 
-        <!-- Zone des résultats -->
+            <!-- Zone des résultats -->
             <div class="results-section">
                 <div class="container">
 
-            <!-- Grille contenant les cartes des livres trouvés -->
+                <!-- Grille contenant les cartes des livres trouvés -->
                 <div class="books-grid">
 
-            <!-- Création d'une carte pour chaque livre retourné par l'API -->
+                    <!-- Création d'une carte pour chaque livre retourné par l'API -->
                     <BookCard
                     v-for="book in paginatedBooks"
                     :key="book.id"
