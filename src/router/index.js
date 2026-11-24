@@ -1,9 +1,10 @@
 
 import { createRouter, createWebHashHistory } from 'vue-router';
-
+// Importation des vues
 import SearchView from '../views/SearchView.vue';
 import BookDetailView from '../views/BookDetailView.vue';
 
+// Définition des routes
 const routes = [
     {
         path: '/',
