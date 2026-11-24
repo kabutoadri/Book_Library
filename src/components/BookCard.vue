@@ -13,7 +13,13 @@
             <h2>{{book.title}}</h2>
             <p>{{ (book.authors || []).join(', ') }}</p>
             <p>{{(book.publishedDate || '').split('-')[0]||'Année inconnue'}}</p>
-        
+
+            <!-- Bouton permettant d'accéder à la page de détails du livre sélectionné -->
+            <button 
+            class="book-details-button"
+            @click="$router.push(`/books/${bookId}`)">
+                Voir les détails
+            </button>
         </article>
 </template>
 
@@ -23,6 +29,10 @@
     props: {
         book: {
             type: Object,
+            required: true
+        },
+        bookId:{
+            type: String,
             required: true
         }
     },

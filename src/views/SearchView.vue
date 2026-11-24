@@ -222,7 +222,8 @@ async function handleSearch(query) {
                     <BookCard
                     v-for="book in paginatedBooks"
                     :key="book.id"
-                    :book="book.volumeInfo" />
+                    :book="book.volumeInfo"
+                    :book-id="book.id" />
                     </div>
 
                     <!-- Navigation entre les pages -->
