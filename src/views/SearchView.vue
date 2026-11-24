@@ -1,21 +1,24 @@
 
 <script setup>
-//Import de ref pour créer une variable réactive dans Vue et computed pour recalculer les indices automatiquement lorsque currentPage change
-import { ref,computed } from 'vue';
-// Import des composants utilisés dans cette page
-import SearchBar from '../components/SearchBar.vue';
-import { searchBooks } from '../services/googleBooksApi.js';
-// Import du composant de chargement
-import LoadingSpinner from '../components/LoadingSpinner.vue'
-// Import de la fonction qui permet d'interroger l'API Google Books
-import BookCard from '../components/BookCard.vue';
+// Import des fonctions Vue
+import { ref, computed } from 'vue';
 
-const loading = ref(false)
+// Import des composants
+import SearchBar from '../components/SearchBar.vue';
+import LoadingSpinner from '../components/LoadingSpinner.vue';
+import BookCard from '../components/BookCard.vue';
+import ErrorMessage from '../components/ErrorMessage.vue';
+
+// Import du service Google Books API
+import { searchBooks } from '../services/googleBooksApi.js';
+
+// État du chargement
+const loading = ref(false);
 
 // Message d'erreur affiché à l'utilisateur
 const errorMessage = ref('');
 
-//// Tableau réactif qui contiendra les livres récupérés depuis l'API
+// Tableau réactif contenant les livres récupérés
 const books = ref([]);
 
 // Numéro de la page actuellement affichée
@@ -25,10 +28,14 @@ const currentPage = ref(1);
 const booksPerPage = 10;
 
 // Indice du premier livre de la page actuelle
-const startIndex = computed(() => (currentPage.value - 1) * booksPerPage);
+const startIndex = computed(() =>
+    (currentPage.value - 1) * booksPerPage
+);
 
 // Indice de fin de la tranche (exclu)
-const endIndex = computed(() => startIndex.value + booksPerPage);
+const endIndex = computed(() =>
+    startIndex.value + booksPerPage
+);
 
 // Livres à afficher sur la page actuelle
 const paginatedBooks = computed(() => {
@@ -44,7 +51,8 @@ const paginatedBooks = computed(() => {
 
     return pageBooks;
 });
-// Nombre total de pages nécessaires pour afficher tous les livres
+
+// Nombre total de pages nécessaires
 const totalPages = computed(() =>
     Math.ceil(books.value.length / booksPerPage)
 );
@@ -80,23 +88,24 @@ async function handleSearch(query) {
 
     console.log('Recherche envoyée :', query);
 
-    // Active le chargement juste avant l'appel API
-    loading.value = true
+    // Activation du chargement
+    loading.value = true;
 
     try {
 
         // Appel de Google Books API
         const data = await searchBooks(query);
 
-        // Stockage des livres retournés dans notre tableau réactif
+        // Stockage des livres retournés
         books.value = data.items || [];
 
         // Vérification si aucun livre n'a été trouvé
         if (books.value.length === 0) {
-             // Affichage d'un message informatif à l'utilisateur
-            errorMessage.value = 'Aucun livre trouvé pour cette recherche';
+            errorMessage.value =
+                'Aucun livre trouvé pour cette recherche';
         }
-        // Revenir à la première page après chaque nouvelle recherche
+
+        // Retour à la première page après chaque recherche
         currentPage.value = 1;
 
         // Affichage de la réponse complète
@@ -114,7 +123,6 @@ async function handleSearch(query) {
             'Nombre de livres retournés :',
             data.items?.length ?? 0
         );
-        
 
     } catch (error) {
 
@@ -122,20 +130,15 @@ async function handleSearch(query) {
         if (
             error.code === 'ETIMEDOUT' ||
             error.code === 'ECONNABORTED'
-            
         ) {
-
             errorMessage.value =
                 'Le délai de réponse a été dépassé';
-
         }
 
         // Détection d'une erreur retournée par l'API
         else if (error.response) {
-
             errorMessage.value =
                 'Service de recherche indisponible';
-
         }
 
         // Détection d'un problème réseau
@@ -143,27 +146,23 @@ async function handleSearch(query) {
             error.code === 'ERR_NETWORK' ||
             error.request
         ) {
-
             errorMessage.value =
                 'Vérifiez votre connexion internet';
-
         }
 
         // Autres erreurs
         else {
-
             errorMessage.value =
                 'Service de recherche indisponible';
-
         }
 
         // Informations techniques pour le développeur
         console.error('Détail de l’erreur :', error);
+
     } finally {
 
-        // Arrête le chargement dans tous les cas,
-        // que la recherche réussisse ou échoue.
-        loading.value = false
+        // Arrêt du chargement dans tous les cas
+        loading.value = false;
 
     }
 }
@@ -172,25 +171,30 @@ async function handleSearch(query) {
 
 <template>
     <section class="search-page">
-    <!-- En-tête de la page de recherche -->
-    <div class="search-section">
-        <div class="container">
 
-        <div class="search-hero">
-           
-            <p class="search-eyebrow">
-                VOTRE PROCHAINE HISTOIRE COMMENCE ICI
-            </p>
+        <!-- En-tête de la page de recherche -->
+        <div class="search-section">
 
-            <h1>Découvrez votre prochaine lecture</h1>
+            <div class="container">
 
-            <p class="search-description">
-                Explorez des milliers de livres et gardez
-                vos découvertes à portée de main.
-            </p>
-            <!-- Barre de recherche : transmet le terme recherché à handleSearch -->
-            <SearchBar @search="handleSearch" />
+                <div class="search-hero">
+
+                    <p class="search-eyebrow">
+                        VOTRE PROCHAINE HISTOIRE COMMENCE ICI
+                    </p>
+
+                    <h1>Découvrez votre prochaine lecture</h1>
+
+                    <p class="search-description">
+                        Explorez des milliers de livres et gardez
+                        vos découvertes à portée de main.
+                    </p>
+
+                    <!-- Barre de recherche -->
+                    <SearchBar @search="handleSearch" />
+
                 </div>
+
             </div>
 
             <!-- Composant de chargement -->
@@ -200,34 +204,34 @@ async function handleSearch(query) {
                 :delay="300"
             />
 
-            <!-- Affichage des erreurs -->
-            <p
-                v-if="errorMessage"
-                class="search-error"
-                role="alert"
-            >
-                {{ errorMessage }}
-            </p>
+            <!-- Composant réutilisable de gestion des erreurs -->
+            <div class="container">
+                <ErrorMessage :message="errorMessage" />
+            </div>
 
         </div>
-    
 
-            <!-- Zone des résultats -->
-            <div class="results-section">
-                <div class="container">
+        <!-- Zone des résultats -->
+        <div class="results-section">
 
-                <!-- Grille contenant les cartes des livres trouvés -->
+            <div class="container">
+
+                <!-- Grille des livres -->
                 <div class="books-grid">
 
-                    <!-- Création d'une carte pour chaque livre retourné par l'API -->
                     <BookCard
-                    v-for="book in paginatedBooks"
-                    :key="book.id"
-                    :book="book.volumeInfo" />
-                    </div>
+                        v-for="book in paginatedBooks"
+                        :key="book.id"
+                        :book="book.volumeInfo"
+                    />
 
-                    <!-- Navigation entre les pages -->
-                    <div v-if="totalPages > 1" class="pagination">
+                </div>
+
+                <!-- Navigation entre les pages -->
+                <div
+                    v-if="totalPages > 1"
+                    class="pagination"
+                >
 
                     <!-- Bouton page précédente -->
                     <button
@@ -235,32 +239,34 @@ async function handleSearch(query) {
                         @click="currentPage--"
                         :disabled="currentPage === 1"
                     >
-                            Précédent
-                        </button>
+                        Précédent
+                    </button>
 
-                        <!-- Numéros des pages -->
-                        <button
-                            v-for="page in visiblePages"
-                            :key="page"
-                            type="button"
-                            @click="currentPage = page"
-                            :class="{ active: currentPage === page }"
-                        >
-                            {{ page }}
-                        </button>
+                    <!-- Numéros des pages -->
+                    <button
+                        v-for="page in visiblePages"
+                        :key="page"
+                        type="button"
+                        @click="currentPage = page"
+                        :class="{ active: currentPage === page }"
+                    >
+                        {{ page }}
+                    </button>
 
-                        <!-- Bouton page suivante -->
-                        <button
-                            type="button"
-                            @click="currentPage++"
-                            :disabled="currentPage === totalPages"
-                        >
-                            Suivant
-                        </button>
+                    <!-- Bouton page suivante -->
+                    <button
+                        type="button"
+                        @click="currentPage++"
+                        :disabled="currentPage === totalPages"
+                    >
+                        Suivant
+                    </button>
 
-    </div>
                 </div>
+
             </div>
+
+        </div>
 
     </section>
 </template>
