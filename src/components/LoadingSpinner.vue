@@ -1,3 +1,15 @@
+<template>
+    <!-- Affiche le chargement uniquement lorsque visible est true. -->
+    <div v-if="visible" class="loading-container" role="status" aria-live="polite">
+        <!-- Cercle animé. -->
+        <div class="loading-spinner" aria-hidden="true"></div>
+
+        <!-- Message personnalisable. -->
+        <p class="loading-message">
+            {{ message }}
+        </p>
+    </div>
+</template>
 
 <script setup>
 import { ref, watch, onUnmounted } from 'vue'
@@ -57,24 +69,3 @@ onUnmounted(() => {
     clearTimeout(timer)
 })
 </script>
-
-<template>
-    <!-- Affiche le chargement uniquement lorsque visible est true. -->
-    <div
-        v-if="visible"
-        class="loading-container"
-        role="status"
-        aria-live="polite"
-    >
-        <!-- Cercle animé. -->
-        <div
-            class="loading-spinner"
-            aria-hidden="true"
-        ></div>
-
-        <!-- Message personnalisable. -->
-        <p class="loading-message">
-            {{ message }}
-        </p>
-    </div>
-</template>
