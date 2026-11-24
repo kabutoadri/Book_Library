@@ -1,4 +1,3 @@
-
 <template>
     <header class="site-header">
 

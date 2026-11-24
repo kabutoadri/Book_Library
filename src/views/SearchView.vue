@@ -3,6 +3,9 @@
 import { ref, computed } from 'vue';
 
 // Import des composants
+//Import de ref pour créer une variable réactive dans Vue et computed pour recalculer les indices automatiquement lorsque currentPage change
+import { ref, computed } from 'vue';
+// Import des composants utilisés dans cette page
 import SearchBar from '../components/SearchBar.vue';
 import LoadingSpinner from '../components/LoadingSpinner.vue';
 import BookCard from '../components/BookCard.vue';
@@ -102,6 +105,8 @@ async function handleSearch(query) {
         if (books.value.length === 0) {
             errorMessage.value =
                 'Aucun livre trouvé pour cette recherche';
+            // Affichage d'un message informatif à l'utilisateur
+            errorMessage.value = 'Aucun livre trouvé pour cette recherche';
         }
 
         // Retour à la première page après chaque recherche
@@ -123,12 +128,14 @@ async function handleSearch(query) {
             data.items?.length ?? 0
         );
 
+
     } catch (error) {
 
         // Détection d'un délai dépassé
         if (
             error.code === 'ETIMEDOUT' ||
             error.code === 'ECONNABORTED'
+
         ) {
             errorMessage.value =
                 'Le délai de réponse a été dépassé';
@@ -183,73 +190,91 @@ async function handleSearch(query) {
         <div class="search-section">
 
             <div class="container">
+                <!-- En-tête de la page de recherche -->
+                <div class="search-section">
+                    <div class="container">
 
-                <div class="search-hero">
+                        <div class="search-hero">
 
-                    <p class="search-eyebrow">
-                        VOTRE PROCHAINE HISTOIRE COMMENCE ICI
+                            <p class="search-eyebrow">
+                                VOTRE PROCHAINE HISTOIRE COMMENCE ICI
+                            </p>
+
+                            <h1>Découvrez votre prochaine lecture</h1>
+
+                            <p class="search-description">
+                                Explorez des milliers de livres et gardez
+                                vos découvertes à portée de main.
+                            </p>
+
+                            <!-- Barre de recherche -->
+                            <SearchBar @search="handleSearch" />
+
+                            <p class="search-description">
+                                Explorez des milliers de livres et gardez
+                                vos découvertes à portée de main.
+                            </p>
+                            <!-- Barre de recherche : transmet le terme recherché à handleSearch -->
+                            <SearchBar @search="handleSearch" />
+                        </div>
+
+                    </div>
+
+                    <!-- Composant de chargement -->
+                    <LoadingSpinner :loading="loading" message="Recherche en cours..." :delay="300" />
+
+                    <!-- Composant réutilisable de gestion des erreurs -->
+                    <div class="container">
+                        <ErrorMessage :message="errorMessage" />
+                    </div>
+                    <!-- Affichage des erreurs -->
+                    <p v-if="errorMessage" class="search-error" role="alert">
+                        {{ errorMessage }}
                     </p>
 
-                    <h1>Découvrez votre prochaine lecture</h1>
-
-                    <p class="search-description">
-                        Explorez des milliers de livres et gardez
-                        vos découvertes à portée de main.
-                    </p>
-
-                    <!-- Barre de recherche -->
-                    <SearchBar @search="handleSearch" />
-
                 </div>
 
-            </div>
 
-            <!-- Composant de chargement -->
-            <LoadingSpinner :loading="loading" message="Recherche en cours..." :delay="300" />
+                <!-- Zone des résultats -->
+                <div class="results-section">
 
-            <!-- Composant réutilisable de gestion des erreurs -->
-            <div class="container">
-                <ErrorMessage :message="errorMessage" />
-            </div>
+                    <div class="container">
+                        <!-- Zone des résultats -->
+                        <div class="results-section">
+                            <div class="container">
 
-        </div>
+                                <!-- Grille des livres -->
+                                <div class="books-grid">
 
-        <!-- Zone des résultats -->
-        <div class="results-section">
+                                    <BookCard v-for="book in paginatedBooks" :key="book.id" :book="book.volumeInfo" />
 
-            <div class="container">
+                                </div>
+                                <!-- Création d'une carte pour chaque livre retourné par l'API -->
+                                <BookCard v-for="book in paginatedBooks" :key="book.id" :book="book.volumeInfo" />
+                            </div>
 
-                <!-- Grille des livres -->
-                <div class="books-grid">
+                            <!-- Navigation entre les pages -->
+                            <div v-if="totalPages > 1" class="pagination">
 
-                    <BookCard v-for="book in paginatedBooks" :key="book.id" :book="book.volumeInfo" />
+                                <!-- Bouton page précédente -->
+                                <button type="button" @click="currentPage--" :disabled="currentPage === 1">
+                                    Précédent
+                                </button>
 
-                </div>
+                                <!-- Numéros des pages -->
+                                <button v-for="page in visiblePages" :key="page" type="button"
+                                    @click="currentPage = page" :class="{ active: currentPage === page }">
+                                    {{ page }}
+                                </button>
 
-                <!-- Navigation entre les pages -->
-                <div v-if="totalPages > 1" class="pagination">
+                                <!-- Bouton page suivante -->
+                                <button type="button" @click="currentPage++" :disabled="currentPage === totalPages">
+                                    Suivant
+                                </button>
 
-                    <!-- Bouton page précédente -->
-                    <button type="button" @click="currentPage--" :disabled="currentPage === 1">
-                        Précédent
-                    </button>
-
-                    <!-- Numéros des pages -->
-                    <button v-for="page in visiblePages" :key="page" type="button" @click="currentPage = page"
-                        :class="{ active: currentPage === page }">
-                        {{ page }}
-                    </button>
-
-                    <!-- Bouton page suivante -->
-                    <button type="button" @click="currentPage++" :disabled="currentPage === totalPages">
-                        Suivant
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
+                            </div>
+                        </div>
+                    </div>
 
     </section>
 </template>
