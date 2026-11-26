@@ -1,6 +1,93 @@
+<template>
+    <section class="search-page">
+
+        <!-- En-tête de la page de recherche -->
+        <div class="search-section">
+
+            <div class="container">
+                <!-- En-tête de la page de recherche -->
+                <div class="search-section">
+                    <div class="container">
+
+                        <div class="search-hero">
+
+                            <p class="search-eyebrow">
+                                VOTRE PROCHAINE HISTOIRE COMMENCE ICI
+                            </p>
+
+                            <h1>Découvrez votre prochaine lecture</h1>
+
+                            <p class="search-description">
+                                Explorez des milliers de livres et gardez
+                                vos découvertes à portée de main.
+                            </p>
+                            <!-- Barre de recherche : transmet le terme recherché à handleSearch -->
+                            <SearchBar @search="handleSearch" />
+                        </div>
+
+                    </div>
+
+                    <!-- Composant de chargement -->
+                    <LoadingSpinner :loading="loading" message="Recherche en cours..." :delay="300" />
+
+                    <!-- Composant réutilisable de gestion des erreurs -->
+                    <div class="container">
+                        <ErrorMessage :message="errorMessage" />
+                    </div>
+                    <!-- Affichage des erreurs -->
+                    <p v-if="errorMessage" class="search-error" role="alert">
+                        {{ errorMessage }}
+                    </p>
+
+                </div>
+            </div>
+            <!-- Zone des résultats -->
+            <div class="results-section">
+
+                <div class="container">
+                    <!-- Zone des résultats -->
+                    <div class="results-section">
+                        <div class="container">
+
+                            <!-- Grille des livres -->
+                            <div class="books-grid">
+
+                                <BookCard v-for="book in paginatedBooks" :key="book.id" :book="book.volumeInfo" />
+
+                            </div>
+                            <!-- Création d'une carte pour chaque livre retourné par l'API -->
+                            <BookCard v-for="book in paginatedBooks" :key="book.id" :book="book.volumeInfo" />
+                        </div>
+
+                        <!-- Navigation entre les pages -->
+                        <div v-if="totalPages > 1" class="pagination">
+
+                            <!-- Bouton page précédente -->
+                            <button type="button" @click="currentPage--" :disabled="currentPage === 1">
+                                Précédent
+                            </button>
+
+                            <!-- Numéros des pages -->
+                            <button v-for="page in visiblePages" :key="page" type="button" @click="currentPage = page"
+                                :class="{ active: currentPage === page }">
+                                {{ page }}
+                            </button>
+
+                            <!-- Bouton page suivante -->
+                            <button type="button" @click="currentPage++" :disabled="currentPage === totalPages">
+                                Suivant
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+</template>
+
 <script setup>
-// Import des fonctions Vue
-import { ref, computed } from 'vue';
 
 // Import des composants
 //Import de ref pour créer une variable réactive dans Vue et computed pour recalculer les indices automatiquement lorsque currentPage change
@@ -181,100 +268,3 @@ async function handleSearch(query) {
     }
 }
 </script>
-
-
-<template>
-    <section class="search-page">
-
-        <!-- En-tête de la page de recherche -->
-        <div class="search-section">
-
-            <div class="container">
-                <!-- En-tête de la page de recherche -->
-                <div class="search-section">
-                    <div class="container">
-
-                        <div class="search-hero">
-
-                            <p class="search-eyebrow">
-                                VOTRE PROCHAINE HISTOIRE COMMENCE ICI
-                            </p>
-
-                            <h1>Découvrez votre prochaine lecture</h1>
-
-                            <p class="search-description">
-                                Explorez des milliers de livres et gardez
-                                vos découvertes à portée de main.
-                            </p>
-
-                            <!-- Barre de recherche -->
-                            <SearchBar @search="handleSearch" />
-
-                            <p class="search-description">
-                                Explorez des milliers de livres et gardez
-                                vos découvertes à portée de main.
-                            </p>
-                            <!-- Barre de recherche : transmet le terme recherché à handleSearch -->
-                            <SearchBar @search="handleSearch" />
-                        </div>
-
-                    </div>
-
-                    <!-- Composant de chargement -->
-                    <LoadingSpinner :loading="loading" message="Recherche en cours..." :delay="300" />
-
-                    <!-- Composant réutilisable de gestion des erreurs -->
-                    <div class="container">
-                        <ErrorMessage :message="errorMessage" />
-                    </div>
-                    <!-- Affichage des erreurs -->
-                    <p v-if="errorMessage" class="search-error" role="alert">
-                        {{ errorMessage }}
-                    </p>
-
-                </div>
-
-
-                <!-- Zone des résultats -->
-                <div class="results-section">
-
-                    <div class="container">
-                        <!-- Zone des résultats -->
-                        <div class="results-section">
-                            <div class="container">
-
-                                <!-- Grille des livres -->
-                                <div class="books-grid">
-
-                                    <BookCard v-for="book in paginatedBooks" :key="book.id" :book="book.volumeInfo" />
-
-                                </div>
-                                <!-- Création d'une carte pour chaque livre retourné par l'API -->
-                                <BookCard v-for="book in paginatedBooks" :key="book.id" :book="book.volumeInfo" />
-                            </div>
-
-                            <!-- Navigation entre les pages -->
-                            <div v-if="totalPages > 1" class="pagination">
-
-                                <!-- Bouton page précédente -->
-                                <button type="button" @click="currentPage--" :disabled="currentPage === 1">
-                                    Précédent
-                                </button>
-
-                                <!-- Numéros des pages -->
-                                <button v-for="page in visiblePages" :key="page" type="button"
-                                    @click="currentPage = page" :class="{ active: currentPage === page }">
-                                    {{ page }}
-                                </button>
-
-                                <!-- Bouton page suivante -->
-                                <button type="button" @click="currentPage++" :disabled="currentPage === totalPages">
-                                    Suivant
-                                </button>
-
-                            </div>
-                        </div>
-                    </div>
-
-    </section>
-</template>

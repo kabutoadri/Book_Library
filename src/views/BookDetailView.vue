@@ -1,22 +1,3 @@
-
-<script setup>
-import { ref } from 'vue';
-
-// Import du composant de gestion des erreurs
-import ErrorMessage from '../components/ErrorMessage.vue';
-
-// Réception de l'identifiant depuis Vue Router
-defineProps({
-    workId: {
-        type: String,
-        required: true
-    }
-});
-
-// Message d'erreur affiché à l'utilisateur
-const errorMessage = ref('');
-</script>
-
 <template>
     <section class="details-page container">
 
@@ -37,3 +18,21 @@ const errorMessage = ref('');
 
     </section>
 </template>
+
+<script setup>
+import { ref } from 'vue';
+
+// Import du composant de gestion des erreurs
+import ErrorMessage from '../components/ErrorMessage.vue';
+
+// Réception de l'identifiant depuis Vue Router
+defineProps({
+    workId: {
+        type: String,
+        required: true
+    }
+});
+
+// Message d'erreur affiché à l'utilisateur
+const errorMessage = ref('');
+</script>

@@ -1,9 +1,3 @@
-
-<script setup>
-import AppHeader from './components/AppHeader.vue';
-import AppFooter from './components/AppFooter.vue';
-</script>
-
 <template>
     <div class="app-shell">
 
@@ -17,3 +11,8 @@ import AppFooter from './components/AppFooter.vue';
 
     </div>
 </template>
+
+<script setup>
+import AppHeader from './components/AppHeader.vue';
+import AppFooter from './components/AppFooter.vue';
+</script>
