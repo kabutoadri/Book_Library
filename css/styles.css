@@ -56,6 +56,7 @@ a {
   flex: 1;
   padding-top: 50px;
   padding-bottom: 50px;
+  background-color: #f3f5f3;
 }
 
 
@@ -452,3 +453,222 @@ a {
   cursor: not-allowed;
 }
 
+
+
+
+/* =================================
+   16. Page de détail d'un livre
+   ================================= */
+
+/* Organisation générale de la page */
+.book-info {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 40px;
+  align-items: start;
+
+  padding: 35px;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* Lien de retour aux résultats */
+.book-info .back-link {
+  grid-column: 1 / -1;
+  margin-bottom: 5px;
+}
+
+/* ---------------------------------
+   Couverture du livre
+   --------------------------------- */
+
+.book-info-image {
+  height: 285px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+
+  background-color: #f3f5f3;
+  border-radius: 7px;
+}
+
+.book-info-image img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* ---------------------------------
+   Informations principales
+   --------------------------------- */
+
+.book-info-content h1 {
+  margin: 0 0 12px;
+  font-size: 30px;
+  line-height: 1.3;
+}
+
+.book-info-content > p {
+  margin: 0 0 20px;
+  color: var(--text-muted);
+  font-size: 16px;
+}
+
+/* ---------------------------------
+   Bloc des caractéristiques
+   --------------------------------- */
+
+.book-metadata {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px 30px;
+
+  padding: 24px;
+  margin-top: 20px;
+
+  background-color: #f0f2ef;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+/* Intitulés : Année, Éditeur, ISBN... */
+.book-metadata span {
+  display: block;
+  margin-bottom: 6px;
+
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Valeurs des caractéristiques */
+.book-metadata p {
+  margin: 0;
+
+  color: var(--text);
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+/* ---------------------------------
+   Description et catégories
+   --------------------------------- */
+
+.book-extra-info {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+
+  margin-top: 25px;
+  padding: 25px;
+
+  background-color: #f0f2ef;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+/* Titres des deux colonnes */
+.book-description h2,
+.book-categories h2 {
+  margin: 0 0 15px;
+  font-size: 20px;
+}
+
+/* Texte de la description et des catégories */
+.book-description p,
+.book-categories p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+/* Étiquettes des catégories */
+.category-tag {
+  display: inline-block;
+  margin: 4px 6px 4px 0;
+  padding: 7px 12px;
+
+  background-color: var(--surface);
+  color: var(--primary);
+
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 13px;
+}
+
+/* ---------------------------------
+   Adaptation aux petits écrans
+   --------------------------------- */
+
+@media (max-width: 600px) {
+
+  .book-info {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    padding: 20px;
+  }
+
+  .book-info-image {
+    width: 100%;
+    max-width: 220px;
+  }
+
+  .book-info-content h1 {
+    font-size: 25px;
+  }
+
+  .book-metadata {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px 15px;
+    padding: 18px;
+  }
+
+  .book-extra-info {
+    grid-template-columns: 1fr;
+  }
+}
+/* Description limitée à 5 lignes */
+.book-description-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-align: justify;
+}
+
+/* Description entièrement affichée */
+.book-description-text.description-expanded {
+  display: block;
+  overflow: visible;
+}
+
+/* Bouton Lire davantage */
+.read-more-button {
+  margin-top: 12px;
+  padding: 8px 14px;
+
+  background-color: var(--surface);
+  color: var(--primary);
+
+  border: 1px solid var(--primary);
+  border-radius: 6px;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: bold;
+
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.read-more-button:hover {
+  background-color: var(--primary);
+  color: white;
+}

@@ -86,3 +86,46 @@ export async function searchBooks(query) {
         throw error;
     }
 }
+
+
+/**
+ * Récupère les détails d'un livre à partir de son identifiant.
+ *
+ * @param {string} workId - Identifiant Google Books du livre
+ * @returns {Promise<Object>} Informations du livre
+ */
+export async function getBookById(workId) {
+
+    // Vérification : on s'assure que l'identifiant du livre existe
+    if (!workId) {
+        throw new Error("L'identifiant du livre est manquant.");
+    }
+
+    // Vérification : on s'assure que la clé API est disponible
+    if (!API_KEY) {
+        throw new Error('La clé Google Books API est manquante.');
+    }
+
+    try {
+
+        // Envoi d'une requête GET à Google Books
+        // L'identifiant du livre est ajouté à l'URL
+        const response = await api.get(`/volumes/${workId}`, {
+            // Transmission de la clé API en paramètre
+            params: {
+                key: API_KEY
+            }
+        });
+         // Retourne les informations du livre reçues depuis Google Books
+        return response.data;
+
+    } catch (error) {
+         // Affiche une erreur dans la console pour faciliter le débogage
+        console.error(
+            'Erreur lors de la récupération du livre :',
+            error.response?.data || error.message
+        );
+        // Transmet l'erreur au composant qui a appelé cette fonction
+        throw error;
+    }
+}
